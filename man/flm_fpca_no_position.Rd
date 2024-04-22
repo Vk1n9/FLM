@@ -16,13 +16,13 @@ flm_fpca_no_position(
 )
 }
 \arguments{
-\item{pheno}{describe}
+\item{pheno}{@param pheno a data frame of phenotype data. This data frame should contain three columns: pedigree id, person id, and phenotype value. These three columns should be named as ped, person, and trait, respectively.}
 
 \item{mode}{"Additive"}
 
-\item{geno}{describe}
+\item{geno}{a matrix of genotype data only. The number of rows should be equal to the number of individuals in pheno. The number of columns is the total number of SNPs.}
 
-\item{covariates}{describe}
+\item{covariates}{a data frame of covariate data. This data frame should contrain at least three columns: pedigree id, person id, and at least one covariate. The first two colums should be named as ped and person, respectively.}
 
 \item{kz}{30}
 
@@ -33,7 +33,7 @@ flm_fpca_no_position(
 \item{family}{"gaussian"}
 }
 \value{
-a value
+a list of p values of testing the genetic effect, given by likelihood ratio test, chi-squared test, and F-distributed test, respectively.
 }
 \description{
 Title

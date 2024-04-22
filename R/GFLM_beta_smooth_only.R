@@ -6,17 +6,17 @@ library(Matrix)
 ### This Function is modified by Ruzong Fan, March 20, 2013 ###
 #' Title
 #'
-#' @param pheno describe
-#' @param mode describe
-#' @param geno describe
-#' @param pos describe
-#' @param order describe
-#' @param basis describe
-#' @param covariate describe
-#' @param base describe
-#' @param interaction describe
+#' @param pheno a data frame of phenotype data. This data frame should contain three columns: pedigree id, person id, and phenotype value. These three columns should be named as ped, person, and trait, respectively.
+#' @param mode a character value specifying the discrete realization of genetic variant function. The default of “Additive” assumes additive effect of minor alleles, “Dom” assume dominant effect, and “Rec” assumes recessive effect.
+#' @param geno a matrix of genotype data only. The number of rows should be equal to the number of individuals in pheno. The number of columns is the total number of SNPs.
+#' @param pos a vector of physical positions of the SNP used in geno. The length of pos should be equal to the column number of geno.
+#' @param order an integer specifying the order of b-splines, which is one higher than their degree. The default of 4 gives cubic splines. If base=”fspline”, order is ignored.
+#' @param basis an integer variable specifying the number of basis functions used to expand genetic effect function. If base=”fspline”, basis should be an odd integer.
+#' @param covariate a data frame of covariate data. This data frame should contrain at least three columns: pedigree id, person id, and at least one covariate. The first two colums should be named as ped and person, respectively.
+#' @param base a character value to specify basis function system to expand the genetic effect function. Options are “bspline” for b-splines and “fspline” for Fourier splines.
+#' @param interaction a logic value indicating whether gene-environment interaction effect should be considered in the model. The default FALSE assumes no interaction.
 #'
-#' @return a value
+#' @return a list of p values of testing the genetic effect, given by likelihood ratio test, chi-squared test, Rao’s efficient score test and global test of mixed effect model, respectively.
 #' @export
 #'
 

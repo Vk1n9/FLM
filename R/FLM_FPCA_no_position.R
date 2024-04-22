@@ -18,10 +18,10 @@ Trace.Matrix = function(x)
 
 #' Title
 #'
-#' @param pheno describe
+#' @param pheno @param pheno a data frame of phenotype data. This data frame should contain three columns: pedigree id, person id, and phenotype value. These three columns should be named as ped, person, and trait, respectively.
 #' @param mode "Additive"
-#' @param geno describe
-#' @param covariates describe
+#' @param geno a matrix of genotype data only. The number of rows should be equal to the number of individuals in pheno. The number of columns is the total number of SNPs.
+#' @param covariates a data frame of covariate data. This data frame should contrain at least three columns: pedigree id, person id, and at least one covariate. The first two colums should be named as ped and person, respectively.
 #' @param kz 30
 #' @param kb 30
 #' @param smooth.cov FALSE
@@ -37,7 +37,7 @@ Trace.Matrix = function(x)
 #' @import rainbow
 #' @import MASS
 #'
-#' @return a value
+#' @return a list of p values of testing the genetic effect, given by likelihood ratio test, chi-squared test, and F-distributed test, respectively.
 #' @export
 #'
 flm_fpca_no_position <- function(pheno, mode = "Additive", geno, covariates, kz = 30, kb = 30, smooth.cov = FALSE, family = "gaussian") {

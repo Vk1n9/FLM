@@ -29,28 +29,28 @@ flm_beta_smooth_only(
 )
 }
 \arguments{
-\item{pheno}{describe}
+\item{pheno}{a data frame of phenotype data. This data frame should contain three columns: pedigree id, person id, and phenotype value. These three columns should be named as ped, person, and trait, respectively.}
 
-\item{mode}{describe}
+\item{mode}{a character value specifying the discrete realization of genetic variant function. The default of “Additive” assumes additive effect of minor alleles, “Dom” assume dominant effect, and “Rec” assumes recessive effect.}
 
-\item{geno}{describe}
+\item{geno}{a matrix of genotype data only. The number of rows should be equal to the number of individuals in pheno. The number of columns is the total number of SNPs.}
 
-\item{pos}{describe}
+\item{pos}{a vector of physical positions of the SNP used in geno. The length of pos should be equal to the column number of geno.}
 
-\item{order}{describe}
+\item{order}{an integer specifying the order of b-splines for genetic effect function and genetic variant function, which is one higher than their degree. The default of 4 gives cubic splines. If base=”fspline”, order is ignored.}
 
-\item{basis}{describe}
+\item{basis}{an integer variable specifying the number of basis functions used to expand genetic effect function. If base=”fspline”, basis should be an odd integer.}
 
-\item{covariate}{describe}
+\item{covariate}{a data frame of covariate data. This data frame should contrain at least three columns: pedigree id, person id, and at least one covariate. The first two colums should be named as ped and person, respectively.}
 
-\item{base}{describe}
+\item{base}{a character value to specify basis function system to expand the genetic effect function and genetic variant function. Options are “bspline” for b-splines and “fspline” for Fourier splines.}
 
-\item{interaction}{describe}
+\item{interaction}{a logic value indicating whether gene-environment interaction effect should be considered in the model. The default FALSE assumes no interaction.}
 }
 \value{
-a value
+a list of p values of testing the genetic effect, given by likelihood ratio test, chi-squared test, and F-distributed test, respectively.
 
-a value
+a list of p values of testing the genetic effect, given by likelihood ratio test, chi-squared test, and F-distributed test, respectively.
 }
 \description{
 Title

@@ -8,19 +8,19 @@ library(survival)
 
 #' Title
 #'
-#' @param time describe
-#' @param delta describe
-#' @param mode describe
-#' @param geno describe
-#' @param pos describe
-#' @param order describe
-#' @param bbasis describe
-#' @param fbasis describe
-#' @param gbasis describe
-#' @param covariate describe
-#' @param base describe
+#' @param time a numeric vector of follow up time for right censored data.
+#' @param delta a numeric vector of status indicator for right censored data, normally 0=no event, 1=event.
+#' @param mode a character value specifying the discrete realization of genetic variant function. The default of “Additive” assumes additive effect of minor alleles, “Dom” assume dominant effect, and “Rec” assumes recessive effect.
+#' @param geno a matrix of genotype data only. The number of rows should be equal to the number of individuals in pheno. The number of columns is the total number of SNPs.
+#' @param pos a vector of physical positions of the SNP used in geno. The length of pos should be equal to the column number of geno.
+#' @param order an integer specifying the order of b-splines basis function, which is one higher than their degree. The default of 4 gives cubic splines. If base=”fspline”, order is ignored.
+#' @param bbasis an integer variable specifying the number of b-spine basis functions used to expand genetic effect function.
+#' @param fbasis an odd integer variable specifying the number of Fourier spline basis functions used to expand genetic effect function.
+#' @param gbasis an integer variable specifying the number of basis functions used to expand genetic variant function. If base=”fspline”, basis should be an odd integer.
+#' @param covariate a data frame of covariate data. This data frame should contrain at least three columns: pedigree id, person id, and at least one covariate. The first two colums should be named as ped and person, respectively.
+#' @param base a character value to specify basis function system to expand the genetic effect function and genetic variant function. Options are “bspline” for b-splines and “fspline” for Fourier splines.
 #'
-#' @return a value
+#' @return a numeric value of p values of testing the genetic effect given by likelihood ratio test.
 #' @export
 
 flm_surv_fixed_model=function(time, delta, mode = "Additive", geno, pos, order, bbasis, fbasis, gbasis, covariate, base = "bspline")
