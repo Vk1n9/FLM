@@ -1,10 +1,14 @@
-Package: FLM1
-Title: What the Package Does (One Line, Title Case)
+Package: FixFRM
+Title: Fixed effect functional regression based association test
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+  c(
+  person("Bingsong","Zhang",email="zhangbingsong@gdmu.edu.cn", role=c("aut","cre"), comment = c(ORCID = "0000-0002-4904-6961")),
+  person("Ruzong", "Fan",email="rf740@georgetown.edu", role="aut"),
+  person("Chi-yang", "Chiu", email="chiu@uthsc.edu", role="aut"),
+  person("Wenqian", "Ruan", email="993747022@qq.com", role="ctb")
+  )
+Description: Fit fixed effect functional regression based model to test between set of genetic variants and traits, which can be quantitative, dichotomous, or survival time values.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
