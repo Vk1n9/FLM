@@ -1,16 +1,17 @@
 library(fda)
 library(MASS)
 library(Matrix)
-#library(globaltest)
-
-### This Function is modified by Ruzong Fan, March 20, 2013 ###
+library(globaltest)
+### This Function is modified by Ruzong Fan, Nov 26, 2012 ###
 #' Title
-#'
 #' @param pheno a data frame of phenotype data. This data frame should contain three columns: pedigree id, person id, and phenotype value. These three columns should be named as ped, person, and trait, respectively.
 #' @param mode a character value specifying the discrete realization of genetic variant function. The default of “Additive” assumes additive effect of minor alleles, “Dom” assume dominant effect, and “Rec” assumes recessive effect.
 #' @param geno a matrix of genotype data only. The number of rows should be equal to the number of individuals in pheno. The number of columns is the total number of SNPs.
 #' @param pos a vector of physical positions of the SNP used in geno. The length of pos should be equal to the column number of geno.
 #' @param order an integer specifying the order of b-splines for genetic effect function and genetic variant function, which is one higher than their degree. The default of 4 gives cubic splines. If base=”fspline”, order is ignored.
+#' @param bbasis an integer variable specifying the number of b-spine basis functions used to expand genetic effect function.
+#' @param fbasis an odd integer variable specifying the number of Fourier spline basis functions used to expand genetic effect function.
+#' @param gbasis an integer variable specifying the number of basis functions used to expand genetic variant function. If base=”fspline”, basis should be an odd integer.
 #' @param covariate a data frame of covariate data. This data frame should contrain at least three columns: pedigree id, person id, and at least one covariate. The first two colums should be named as ped and person, respectively.
 #' @param base a character value to specify basis function system to expand the genetic effect function and genetic variant function. Options are “bspline” for b-splines and “fspline” for Fourier splines.
 #' @param interaction a logic value indicating whether gene-environment interaction effect should be considered in the model. The default FALSE assumes no interaction.
@@ -23,7 +24,8 @@ library(Matrix)
 #' @return a list of p values of testing the genetic effect, given by likelihood ratio test, chi-squared test, and F-distributed test, respectively.
 #' @export
 #'
-flm_beta_smooth_only=function(pheno, mode = "Additive", geno, pos, order, basis, covariate, base = "bspline", interaction = FALSE)
+
+flm_fixed_model=function(pheno, mode = "Additive", geno, pos, order, bbasis, fbasis, gbasis, covariate, base = "bspline", interaction = FALSE)
 {
   geno[is.na(geno)]=0
   covariate[is.na(covariate)] = 0
@@ -63,19 +65,26 @@ flm_beta_smooth_only=function(pheno, mode = "Additive", geno, pos, order, basis,
   }
 
   if (base ==  "bspline"){
-    betabasis  = create.bspline.basis(norder = order, nbasis = basis)
+    betabasis  = create.bspline.basis(norder = order, nbasis = bbasis)
+    genobasis  = create.bspline.basis(norder = order, nbasis = gbasis)
   } else if (base == "fspline"){
-    betabasis  = create.fourier.basis(c(0,1), nbasis = basis)
+    betabasis  = create.fourier.basis(c(0,1), nbasis = fbasis)
+    genobasis  = create.fourier.basis(c(0,1), nbasis = gbasis)
   }else { }
 
-  B = eval.basis(pos, betabasis)
+  B = eval.basis(pos, genobasis)
 
-  UJ = geno %*% B
-  #########
-  pval = list()
+  to_mul = ginv(t(B) %*% B) %*% t(B)
+  #to_mul = solve( nearPD(t(B)%*%B)$mat ) %*% t(B)  ###nearPD requires library Matrix###
+  U      = geno %*% t( to_mul )
 
-  if (interaction == FALSE)
-  {
+  J      = inprod(genobasis, betabasis)   ### added by Fan ###
+
+  UJ = matrix( U %*% J, ncol = ncol(J) )
+  ###########################
+  pval  = list()
+
+  if (interaction == FALSE) {
     fit        = glm (pheno ~ covariate + UJ, family = "gaussian")
     pval$LRT   = anova(fit, test = "LRT")[3,5]
     pval$Chisq = anova(fit, test = "Chisq")[3,5]
@@ -86,7 +95,7 @@ flm_beta_smooth_only=function(pheno, mode = "Additive", geno, pos, order, basis,
   }else
   {
     Interaction = matrix (0, ncol =  ncol(UJ), nrow =nrow(UJ) )
-    for ( i in 1:nrow(Interaction) ) { Interaction[i,] = covariate[i,1] * UJ[i,] }
+    for ( i in 1:nrow(Interaction) ){ Interaction[i,] = covariate[i,2] * UJ[i,] }
 
     fitInt     = glm (pheno ~ covariate + UJ + Interaction, family = "gaussian")
     pval$LRT   = anova(fitInt, test = "LRT")[4,5]

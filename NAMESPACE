@@ -2,6 +2,7 @@
 
 export(flm_beta_smooth_only)
 export(flm_fixed_model)
+export(flm_fpca)
 export(flm_fpca_no_position)
 export(flm_surv_beta_smooth_only)
 export(flm_surv_fixed_model)

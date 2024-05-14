@@ -9,7 +9,7 @@ library(mgcv)
 #'
 #' @param x describe
 #'
-#' @return a value
+#' @return a matrix
 
 Trace.Matrix = function(x)
 {
@@ -18,7 +18,7 @@ Trace.Matrix = function(x)
 
 #' Title
 #'
-#' @param pheno @param pheno a data frame of phenotype data. This data frame should contain three columns: pedigree id, person id, and phenotype value. These three columns should be named as ped, person, and trait, respectively.
+#' @param pheno a data frame of phenotype data. This data frame should contain three columns: pedigree id, person id, and phenotype value. These three columns should be named as ped, person, and trait, respectively.
 #' @param mode "Additive"
 #' @param geno a matrix of genotype data only. The number of rows should be equal to the number of individuals in pheno. The number of columns is the total number of SNPs.
 #' @param covariates a data frame of covariate data. This data frame should contrain at least three columns: pedigree id, person id, and at least one covariate. The first two colums should be named as ped and person, respectively.
